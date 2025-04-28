@@ -78,4 +78,4 @@ This tool is developed exclusively for educational and research purposes. Any de
 ### Author ✍️👤📧
 
 - Ismail RHOULAM
-- Contact: [ismail.rhoulam@um5r.ac.ma](mailto\:ismail.rhoulam@um5r.ac.ma)
+- Contact: [ismail.rhoulam@um5r.ac.ma](mailto\:contact@ismailslab.com)
