@@ -33,6 +33,15 @@ driver.maximize_window()
 mouse = ActionChains(driver)
 driver.get("https://www.instagram.com/")
 
+# if os.path.exists(f"cookies.txt") and False:
+#     with open("cookies.txt", "r") as f:
+#         cookies = eval(f.read())
+#     for cookie in cookies:
+#         driver.add_cookie(cookie)
+#     driver.refresh()
+#     time.sleep(5)
+#     print("Logged in using cookies")
+# else:
 os.makedirs(f"{datetime.date.today()}/{USERNAME}", exist_ok=True)
 
 username = WebDriverWait(driver, 30).until(
@@ -52,12 +61,12 @@ username.send_keys(USERNAME)
 password.send_keys(PASSWORD)
 password.send_keys(Keys.RETURN)
 
-there_is_2fa = False
+there_is_2fa = input("Is there 2FA (y/n)? ").lower() == 'y'
 
 if there_is_2fa:
     code = WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.CSS_SELECTOR, "input[name='verificationCode']")))
 
-    CODE = input("Code de vérification: ")
+    CODE = input("Code: ")
 
     code.send_keys(CODE)
     code.send_keys(Keys.RETURN)
@@ -65,13 +74,17 @@ if there_is_2fa:
 time.sleep(5)
 print("Logged in")
 
+# with open("cookies.txt", "w") as f:
+#     f.write(str(driver.get_cookies()))
+
 time.sleep(15)
+
 driver.get(f"https://www.instagram.com/{USERNAME}/")
 
-fcount = int(WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, "//*[starts-with(@id, 'mount_0_0_')]/div/div/div[2]/div/div/div[1]/div[2]/div/div[1]/section/main/div/header/section[3]/ul/li[2]/div/a/span/span/span"))).text)
+fcount = int(WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, f"//a[@href='/{USERNAME}/followers/']/span/span/span"))).text) #"//*[starts-with(@id, 'mount_0_0_')]/div/div/div[2]/div/div/div[1]/div[2]/div/div[1]/section/main/div/header/section[3]/ul/li[2]/div/a/span/span/span"))).text)
 print(f'You have {fcount} followers')
 
-WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, f"//a[contains(@href, '{USERNAME}')]"))).click()
+WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, f"//a[@href='/{USERNAME}/followers/']"))).click()
 time.sleep(5)
 
 scrolldiv = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, '/html/body/div[4]/div[2]/div/div/div[1]/div/div[2]/div/div/div/div/div[2]/div/div/div[3]')))
@@ -94,7 +107,8 @@ time.sleep(5)
 
 search_section = WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.CSS_SELECTOR, "input[placeholder='Search']")))
 failed = []
-for uname in followers[942:]:
+index = 0
+for uname in followers:
     try:
         typeThere(uname, search_section)
         time.sleep(2)
@@ -105,6 +119,8 @@ for uname in followers[942:]:
         failed.append(uname)
     eraseThere(uname, search_section)
     time.sleep(2)
+    print(f'Added [{index}/{len(followers)}] to close friends')
+    index += 1
 
 print("Done!")
 
