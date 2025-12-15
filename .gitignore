@@ -3,3 +3,4 @@ makemclose.ipynb
 cookies.txt
 __pycache__/
 20*/
+*.json
