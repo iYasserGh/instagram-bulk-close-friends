@@ -52,12 +52,15 @@ username.send_keys(USERNAME)
 password.send_keys(PASSWORD)
 password.send_keys(Keys.RETURN)
 
-code = WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.CSS_SELECTOR, "input[name='verificationCode']")))
+there_is_2fa = False
 
-CODE = input("Code de vérification: ")
+if there_is_2fa:
+    code = WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.CSS_SELECTOR, "input[name='verificationCode']")))
 
-code.send_keys(CODE)
-code.send_keys(Keys.RETURN)
+    CODE = input("Code de vérification: ")
+
+    code.send_keys(CODE)
+    code.send_keys(Keys.RETURN)
 
 time.sleep(5)
 print("Logged in")
